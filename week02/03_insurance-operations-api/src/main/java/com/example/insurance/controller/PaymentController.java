@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class PaymentController {
     private final InsuranceOperationsService s;
     public PaymentController(InsuranceOperationsService s) {
-        this.s=s;
+        this.s = s;
     }
     @GetMapping("/{id}")
     public Object get(@PathVariable long id) {
