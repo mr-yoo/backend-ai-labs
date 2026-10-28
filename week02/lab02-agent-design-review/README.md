@@ -1,36 +1,66 @@
-# Lab 02 — Agent Design Review
+# Insurance Premium API
 
-## 목표
-동일한 Spring Boot 코드를 서로 상반된 관점의 Agent가 검토하도록 지시하고, 제안의 근거와 트레이드오프를 비교한다. Tool 호출 원리나 Token 측정은 이 교시의 범위가 아니다.
+보험 계약의 기본 보험료와 계약 조건에 따른 할인 금액을 계산하는 Spring Boot REST API.
 
-## 환경
-Java 21 / Spring Boot 3.3.5 / Maven. 별도 DB 없이 메모리 데이터 사용.
+## 기술 스택
+- Java 21
+- Spring Boot 3.3.5
+- Maven
+- JUnit 5
 
+현재 계약 데이터는 애플리케이션 내부의 메모리 저장소에서 제공한다. 별도의 데이터베이스 설정은 필요하지 않다.
+
+## 주요 기능
+- 계약 ID 기반 보험료 조회
+- 계약 기간 및 고객 유형에 따른 할인 계산
+- 계약 상태에 따른 보험료 조회 제한
+
+## 실행
 ```bash
-cd week02/lab02-agent-design-review
 mvn test
 mvn spring-boot:run
+```
+
+## API
+### GET /api/contracts/{id}/premium
+
+활성 계약의 보험료와 할인율을 조회한다.
+
+```bash
 curl http://localhost:8080/api/contracts/1001/premium
 ```
 
-예상 응답: `{"contractId":1001,"premium":88000,"discountPercent":12}`
+응답 예시:
+```json
+{
+  "contractId": 1001,
+  "premium": 88000,
+  "discountPercent": 12
+}
+```
 
-## 60분 실습
-1. **10분 — 프로젝트 이해:** Codex에 전체 구조, 보험료 산정 흐름, 할인 규칙, 상태 검증을 코드 근거와 함께 설명하도록 지시한다.
-2. **10분 — 기본 분석:** '보험료 계산 구조를 개선해줘. 변경하지 말고 제안만 해줘.' 같은 모호한 요청을 실행한다.
-3. **15분 — 상반된 Agent 구성:** 안정성 우선 Reviewer와 성능 우선 Reviewer를 각각 별도 Context/지침으로 구성한다. `prompts/` 참조.
-4. **15분 — 동일 과제 독립 검토:** 각 Agent에 같은 코드와 같은 과제를 주고 수정 없이 개선안을 받는다. 서로의 결과를 미리 보여주지 않는다.
-5. **10분 — 통합 판단:** 제안의 코드 근거, 기존 테스트 영향, 실제 성능 근거, 변경 비용을 비교하고 최종 개발 지시를 작성한다.
+존재하지 않는 계약은 404, 비활성 계약은 400을 반환한다.
 
-## 학습 포인트
-- 안정성 Agent는 기존 할인 상한(12%), ACTIVE 계약 검증, API 응답 호환성을 우선한다.
-- 성능 Agent는 불필요한 조회/연산, 병목 근거, 성능 측정 계획을 우선한다.
-- **성능 개선이 반드시 필요하다는 전제를 주지 않는다.** 현재 예제는 메모리 저장소라서 무의미한 캐싱이나 비동기화 제안이 나올 수 있다. 이를 비판적으로 검증하는 것이 실습의 핵심이다.
-- 독립 Agent를 구성할 수 없는 환경이라면 새 세션 2개에 각각 역할 지침을 부여해 비교한다.
-- 현재 코드는 의도적으로 정상 동작한다. '버그 수정'이 아니라 **상반된 설계 리뷰** 과제다.
+## 할인 정책
+- 계약 기간이 5년 이상이면 10% 할인
+- 우량 고객이면 5% 할인
+- 할인율은 합산하되 최대 12%까지 적용
+- 활성(ACTIVE) 계약만 보험료 조회 가능
 
-## 공정한 비교
-같은 초기 커밋, 같은 모델, 동일한 과제, 서로 독립된 세션을 사용한다. Agent별 추가 Context 차이는 실험 변수로 기록한다. 실습 중 원본 코드를 수정하지 않는다.
+## 프로젝트 구조
+```text
+src/main/java/com/shinhan/lab02/
+  InsuranceApplication.java
+  Contract.java
+  ContractRepository.java
+  DiscountPolicy.java
+  PremiumService.java
+  PremiumController.java
+src/test/java/com/shinhan/lab02/
+  PremiumServiceTest.java
+```
 
-## 평가 기준
-정확한 코드 근거 / 정책 보존 / 성능 주장에 대한 측정 근거 / 불필요한 변경 억제 / 실행 가능한 최종 지시.
+## 개발 시 참고
+- 현재 구현은 인메모리 계약 데이터 기반이다.
+- 보험료는 정수 단위로 계산한다.
+- 할인 정책 변경 시 기존 계약 유형에 대한 테스트를 확인한다.
