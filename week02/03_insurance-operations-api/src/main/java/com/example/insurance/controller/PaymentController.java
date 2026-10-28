@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 public class PaymentController {
  private final InsuranceOperationsService s;
  public PaymentController(InsuranceOperationsService s){this.s=s;}
- @GetMapping public Object list(){return s.payments();}
+ 
 @GetMapping("/{id}") public Object get(@PathVariable long id){return s.payment(id);}
 @PostMapping public Object create(@Valid @RequestBody PaymentRequest r){return s.createPayment(r);}
 @GetMapping("/contracts/{contractId}") public Object byContract(@PathVariable long contractId){return s.contractPayments(contractId);}
