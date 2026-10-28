@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class ClaimController {
     private final InsuranceOperationsService s;
     public ClaimController(InsuranceOperationsService s) {
-        this.s=s;
+        this.s = s;
     }
     @GetMapping
     public Object list() {
