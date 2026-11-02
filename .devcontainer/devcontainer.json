@@ -1,21 +1,31 @@
 {
-  "name": "Backend AI Labs (Java 21 + Maven)",
+  "name": "Backend AI Labs (Java 21 + Gradle + JUnit 5)",
   "build": {
     "dockerfile": "Dockerfile"
   },
   "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21"
+    },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "22"
     }
+  },
+  "containerEnv": {
+    "JAVA_HOME": "/usr/local/sdkman/candidates/java/current"
   },
   "postCreateCommand": "npm install -g @openai/codex",
   "customizations": {
     "vscode": {
       "extensions": [
-        "vscjava.vscode-java-pack",
+        "redhat.java",
+        "vscjava.vscode-java-debug",
+        "vscjava.vscode-java-dependency",
+        "vscjava.vscode-gradle",
         "vmware.vscode-spring-boot",
         "openai.chatgpt",
-        "darkstyle.codex-token-usage-for-enterprises"
+        "darkstyle.codex-token-usage-for-enterprises",
+        "vscjava.vscode-java-test"
       ]
     }
   },

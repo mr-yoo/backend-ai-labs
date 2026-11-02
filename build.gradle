@@ -1,0 +1,22 @@
+plugins {
+    id 'base'
+}
+
+// Build and verify every lab from the repository root.
+tasks.named('build') {
+    dependsOn subprojects.collect { "${it.path}:build" }
+}
+
+tasks.register('test') {
+    group = 'verification'
+    description = 'Runs the JUnit tests for every lab.'
+    dependsOn subprojects.collect { "${it.path}:test" }
+}
+
+tasks.named('check') {
+    dependsOn subprojects.collect { "${it.path}:check" }
+}
+
+tasks.named('clean') {
+    dependsOn subprojects.collect { "${it.path}:clean" }
+}

@@ -5,7 +5,7 @@
 ## 기술 스택
 - Java 21
 - Spring Boot 3.3.5
-- Maven
+- Gradle 8.14.3 (Wrapper)
 - JUnit 5
 
 현재 계약 데이터는 애플리케이션 내부의 메모리 저장소에서 제공한다. 별도의 데이터베이스 설정은 필요하지 않다.
@@ -16,9 +16,11 @@
 - 계약 상태에 따른 보험료 조회 제한
 
 ## 실행
+
+아래 Gradle 명령은 저장소 루트에서 실행한다.
 ```bash
-mvn test
-mvn spring-boot:run
+./gradlew :lab02-agent-design-review:test
+./gradlew :lab02-agent-design-review:bootRun
 ```
 
 ## API
@@ -64,3 +66,28 @@ src/test/java/com/shinhan/lab02/
 - 현재 구현은 인메모리 계약 데이터 기반이다.
 - 보험료는 정수 단위로 계산한다.
 - 할인 정책 변경 시 기존 계약 유형에 대한 테스트를 확인한다.
+
+## OpenAPI / Swagger UI
+
+애플리케이션을 실행한 후 아래 주소에서 API 명세를 확인하고 요청을 실행할 수 있다.
+
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- OpenAPI JSON: http://localhost:8080/v3/api-docs
+- OpenAPI YAML: http://localhost:8080/v3/api-docs.yaml
+
+Codespaces에서는 전달된 포트 8080의 브라우저 주소 뒤에 위 경로를 붙인다.
+각 실습은 독립 실행하며, 동시에 실행할 때는 서로 다른 서버 포트를 사용한다.
+
+SpringDoc OpenAPI 2.6.0의 WebMVC UI starter를 사용한다.
+
+## JUnit 5 테스트 환경
+
+`spring-boot-starter-test`, `junit-platform-launcher`, `useJUnitPlatform()`을 사용한다.
+저장소 루트에서 실행한다.
+
+```bash
+./gradlew :lab02-agent-design-review:test
+```
+테스트는 이 실습의 `src/test/java`에 작성한다.
+테스트는 이 실습의 `src/test/java`에 작성한다.
+보고서: `week02/lab02-agent-design-review/build/reports/tests/test/index.html`.

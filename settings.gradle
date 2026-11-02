@@ -1,0 +1,10 @@
+rootProject.name = 'backend-ai-labs'
+
+include 'lab01-hello-world'
+project(':lab01-hello-world').projectDir = file('week02/lab01-hello-world')
+
+include 'lab02-agent-design-review'
+project(':lab02-agent-design-review').projectDir = file('week02/lab02-agent-design-review')
+
+include 'lab03-insurance-operations-api'
+project(':lab03-insurance-operations-api').projectDir = file('week02/lab03-insurance-operations-api')
