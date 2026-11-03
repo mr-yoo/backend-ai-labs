@@ -52,6 +52,34 @@ Windows 명령 프롬프트에서는 `./gradlew` 대신 `gradlew.bat`를 사용�
 
 Codespaces에서는 추가 포트도 전달해야 한다. 실행 JAR는 각 실습의 `build/libs/`에 생성된다.
 
+## Java 코드 포맷
+
+모든 실습은 Spotless 7.2.1과 google-java-format 1.28.0을 공통으로 사용한다.
+Java 소스와 테스트에 Google 스타일(공백 2칸 들여쓰기)을 적용하며, `check`와 `build`에서 포맷도 검사한다.
+
+```bash
+# 전체 Java 파일 자동 정렬
+./gradlew spotlessApply
+
+# 포맷 검사
+./gradlew spotlessCheck
+
+# 특정 실습만 정렬
+./gradlew :lab02-agent-design-review:spotlessApply
+```
+
+VS Code에서 **저장소 루트**를 열면 `.vscode/settings.json`에 따라 Java 파일 저장 시
+Spotless Gradle 확장이 빌드와 동일한 포매터를 실행한다. `Format Document`도 같은 규칙을 사용한다.
+최초 실행은 Gradle과 포매터 의존성을 내려받느라 시간이 걸릴 수 있다.
+
+Dev Container에는 필요한 확장이 자동 설치된다. 기존 컨테이너는 **Rebuild Container**로 적용하거나,
+확장 탭에서 추천 확장 **Spotless Gradle**(`richardwillis.vscode-spotless-gradle`)을 설치한 뒤
+**Developer: Reload Window**를 실행한다. 로컬 VS Code에서는 추천 확장과 Java 21이 필요하다.
+문제가 있으면 Output 패널의 `Spotless Gradle` 및 `Gradle for Java` 로그를 확인한다.
+
+- [Spotless Gradle 공식 문서](https://github.com/diffplug/spotless/tree/main/plugin-gradle)
+- [VS Code 확장 및 저장 시 포맷 설정](https://marketplace.visualstudio.com/items?itemName=richardwillis.vscode-spotless-gradle)
+
 ## SpringDoc OpenAPI
 
 Gradle의 `implementation` 의존성으로 SpringDoc WebMVC UI starter를 사용한다.

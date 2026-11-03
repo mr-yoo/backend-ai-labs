@@ -1,0 +1,12 @@
+{
+  "java.format.enabled": false,
+  "[java]": {
+    "editor.defaultFormatter": "richardwillis.vscode-spotless-gradle",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "spotlessGradle.format.enable": true
+  }
+}

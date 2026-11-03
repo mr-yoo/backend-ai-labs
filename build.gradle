@@ -1,5 +1,19 @@
 plugins {
     id 'base'
+    id 'com.diffplug.spotless' version '7.2.1' apply false
+}
+
+subprojects {
+    pluginManager.withPlugin('java') {
+        apply plugin: 'com.diffplug.spotless'
+
+        spotless {
+            java {
+                target 'src/*/java/**/*.java'
+                googleJavaFormat('1.28.0')
+            }
+        }
+    }
 }
 
 // Build and verify every lab from the repository root.
